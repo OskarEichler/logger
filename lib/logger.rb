@@ -379,14 +379,6 @@ class Logger
 
   include Severity
 
-  # Must respond to .new and return a Hash-like object.
-  # The returned object must respond to #[], #[]=, #delete, #dup, and #clear.
-  #
-  # ObjectSpace::WeakKeyMap when supported.
-  OverrideMap =
-    defined?(ObjectSpace::WeakKeyMap) ? ObjectSpace::WeakKeyMap : Hash
-  private_constant :OverrideMap
-
   # Logging severity threshold (e.g. <tt>Logger::INFO</tt>).
   def level
     level_override[level_key] || @level
@@ -613,7 +605,7 @@ class Logger
     self.datetime_format = datetime_format
     self.formatter = formatter
     @logdev = nil
-    @level_override = OverrideMap.new
+    @level_override = {}
     if logdev && logdev != File::NULL
       @logdev = LogDevice.new(logdev, shift_age: shift_age,
         shift_size: shift_size,
@@ -784,7 +776,7 @@ private
         does not call super probably
       ;;;
     end
-    @level_override ||= OverrideMap.new
+    @level_override ||= {}
   end
 
   def initialize_copy(other)
