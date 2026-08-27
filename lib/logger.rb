@@ -779,6 +779,11 @@ private
     @level_override ||= {}
   end
 
+  def initialize_copy(other)
+    super
+    @level_override = @level_override&.clone&.clear
+  end
+
   def level_key
     Fiber.current
   end
