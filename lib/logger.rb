@@ -781,6 +781,7 @@ private
 
   def initialize_copy(other)
     super
+    @default_formatter = @default_formatter.dup
     @level_override = @level_override&.clone&.clear
   end
 
